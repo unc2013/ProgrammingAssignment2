@@ -1,22 +1,20 @@
 ##
-# Matrix inversion is usually a costly computation and there may be some benefit
-# to caching the inverse of a matrix rather than compute it repeatedly. The
-# following two functions are used to cache the inverse of a matrix.
+# The following two functions are used to cache the inverse of a matrix.
 
-# makeCacheMatrix creates a list containing a function to
-# 1. set the value of the matrix
-# 2. get the value of the matrix
-# 3. set the value of inverse of the matrix
-# 4. get the value of inverse of the matrix
+# function: makeCacheMatrix --- creates a list containing a function that
+# 1. sets the value of the matrix
+# 2. gets the value of the matrix
+# 3. sets the value of inverse of the matrix
+# 4. gets the value of inverse of the matrix
 ##
 
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(a = matrix()) {
   inv <- NULL
   set <- function(y) {
-    x <<- y
+    a <<- b
     inv <<- NULL
   }
-  get <- function() x
+  get <- function() a
   setinverse <- function(inverse) inv <<- inverse
   getinverse <- function() inv
   list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
@@ -24,22 +22,20 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 ##
-# The following function returns the inverse of the matrix. It first checks if
-# the inverse has already been computed. If so, it gets the result and skips the
-# computation. If not, it computes the inverse, sets the value in the cache via
-# setinverse function.
-
-# This function assumes that the matrix is always invertible.
+# function: cacheSolve --  assumes that the matrix is always invertible.
+# 1. checks if the inverse has already been computed
+# 2. if so - gets the result and skips computation
+# 3. if not - computes the inverse, sets the value in the cache
 ##
 
-cacheSolve <- function(x, ...) {
-  inv <- x$getinverse()
+cacheSolve <- function(a, ...) {
+  inv <- a$getinverse()
   if(!is.null(inv)) {
-    message("getting cached data.")
+    message("getting the cached data....")
     return(inv)
   }
-  data <- x$get()
+  data <- a$get()
   inv <- solve(data)
-  x$setinverse(inv)
+  a$setinverse(inv)
   inv
 }
